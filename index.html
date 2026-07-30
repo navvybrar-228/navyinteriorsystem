@@ -477,7 +477,7 @@ nav {
 ══════════════════════════════ */
 .projects {
   padding: 100px 5%;
-  background: var(--navy);
+  background: var(--navy2);
   position: relative;
 }
 .projects::before {
@@ -485,123 +485,311 @@ nav {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--blue3), transparent);
 }
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
 }
 .project-card {
-  background: var(--navy3);
-  border: 1px solid rgba(58,107,196,0.25);
-  padding: 0;
   position: relative;
-  transition: all 0.3s;
+  background: var(--navy3);
+  border: 1px solid rgba(58,107,196,0.2);
   overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
 }
-.project-card:hover {
-  border-color: var(--gold);
-  transform: translateY(-4px);
-}
-.project-tag {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.project-card:hover { transform: translateY(-4px); border-color: rgba(58,107,196,0.5); }
+.project-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
   background: var(--navy4);
-  padding: 10px 20px;
-  border-bottom: 1px dashed rgba(232,180,74,0.35);
 }
-.project-tag-label {
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.project-card:hover .project-thumb img { transform: scale(1.06); }
+.project-thumb-count {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(11,22,40,0.85);
+  border: 1px solid rgba(58,107,196,0.4);
+  color: var(--white);
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 0.62rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--gold2);
-}
-.project-tag-status {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 5px 10px;
   display: flex;
   align-items: center;
   gap: 6px;
+  text-transform: uppercase;
+}
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(6,10,20,0.92) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.project-card:hover .project-overlay { opacity: 1; }
+.project-view {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-info { padding: 22px 24px 26px; }
+.project-tag {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 600;
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--gold2);
+  margin-bottom: 8px;
 }
-.project-tag-status::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4caf6a;
-  box-shadow: 0 0 6px rgba(76,175,106,0.7);
-}
-.project-body {
-  padding: 28px 28px 32px;
-}
-.project-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 900;
-  font-size: 0.7rem;
-  letter-spacing: 0.18em;
-  color: var(--blue3);
-  margin-bottom: 10px;
-}
-.project-name {
+.project-title {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 800;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--white);
-  line-height: 1.15;
-  margin-bottom: 16px;
-  min-height: 64px;
+  margin-bottom: 8px;
 }
-.project-divider {
-  width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.08);
-  margin-bottom: 16px;
-}
-.project-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.project-meta-block { display: flex; flex-direction: column; gap: 2px; }
-.project-meta-label {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+.project-desc {
+  font-size: 0.85rem;
   color: var(--grey);
+  line-height: 1.6;
+  font-weight: 300;
 }
-.project-meta-value {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  color: var(--light);
-}
-.project-bolt {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid rgba(232,180,74,0.4);
+
+.project-card.no-photo { cursor: default; }
+.project-card.no-photo:hover { transform: none; border-color: rgba(58,107,196,0.2); }
+.project-thumb.no-photo-thumb {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(58,107,196,0.06) 0, rgba(58,107,196,0.06) 2px, transparent 2px, transparent 18px),
+    var(--navy4);
 }
-.project-bolt svg { width: 12px; height: 12px; }
+.no-photo-icon { width: 56px; height: 56px; opacity: 0.5; }
+.no-photo-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(11,22,40,0.85);
+  border: 1px solid rgba(122,143,170,0.35);
+  color: var(--grey);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  padding: 5px 10px;
+  text-transform: uppercase;
+}
 
-@media (max-width: 900px) {
-  .projects-grid { grid-template-columns: 1fr; }
+/* ── LIGHTBOX ── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(4,8,16,0.96);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 5%;
+}
+.lightbox.active { display: flex; }
+.lightbox-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lightbox-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-img {
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  border: 1px solid rgba(58,107,196,0.35);
+  background: var(--navy3);
+}
+.lightbox-close {
+  position: absolute;
+  top: -54px;
+  right: 0;
+  background: transparent;
+  border: 1px solid rgba(244,242,238,0.25);
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lightbox-close:hover { border-color: var(--gold2); color: var(--gold2); }
+.lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(11,22,40,0.85);
+  border: 1px solid rgba(58,107,196,0.4);
+  color: var(--white);
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.lightbox-arrow:hover { background: var(--blue3); }
+.lightbox-arrow.prev { left: -10px; }
+.lightbox-arrow.next { right: -10px; }
+.lightbox-meta {
+  margin-top: 22px;
+  text-align: center;
+}
+.lightbox-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.lightbox-counter {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 6px;
+}
+.lightbox-thumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.lightbox-thumbs img {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  cursor: pointer;
+  opacity: 0.5;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.lightbox-thumbs img:hover { opacity: 0.85; }
+.lightbox-thumbs img.active { opacity: 1; border-color: var(--gold2); }
+
+/* ══════════════════════════════
+   REVIEWS
+══════════════════════════════ */
+.reviews {
+  padding: 100px 5%;
+  position: relative;
+}
+.reviews::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(58,107,196,0.5), transparent);
+}
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+}
+.review-card {
+  background: var(--navy3);
+  padding: 40px 34px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.review-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+.review-card:hover::before { transform: scaleX(1); }
+.review-quote {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 2.6rem;
+  color: rgba(200,146,42,0.25);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.review-stars {
+  color: var(--gold2);
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  margin-bottom: 16px;
+}
+.review-text {
+  font-size: 0.92rem;
+  color: var(--light);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+.review-author {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--white);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 16px;
+}
+.review-role {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 4px;
 }
 
 /* ══════════════════════════════
@@ -812,7 +1000,6 @@ nav {
   margin-bottom: 20px;
 }
 .cta-title span { color: var(--gold2); }
-.cta-sub {
   font-size: 1rem;
   color: var(--grey);
   margin-bottom: 44px;
@@ -925,10 +1112,15 @@ footer {
   .hero-stats { position: static; margin-top: 60px; justify-content: flex-start; }
   .nav-links { display: none; }
   .hero { padding-top: 100px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .lightbox-arrow.prev { left: 4px; }
+  .lightbox-arrow.next { right: 4px; }
 }
 @media (max-width: 500px) {
   .process-steps { grid-template-columns: 1fr; }
   .hero-stats { gap: 28px; }
+  .lightbox-close { top: -46px; }
+  .lightbox-arrow { width: 38px; height: 38px; font-size: 1.1rem; }
 }
 </style>
 </head>
@@ -956,9 +1148,10 @@ footer {
     <li><a href="#projects">Projects</a></li>
     <li><a href="#why">Why Us</a></li>
     <li><a href="#process">Process</a></li>
+    <li><a href="#reviews">Reviews</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="mailto:navybrar34@gmail.com?subject=Quote%20Request" class="nav-cta">Get a Quote</a>
+  <a href="mailto:navybrar34@gmail.com" class="nav-cta">Get a Quote</a>
 </nav>
 
 <!-- ── HERO ── -->
@@ -988,7 +1181,7 @@ footer {
     </p>
 
     <div class="hero-actions">
-      <a href="mailto:navybrar34@gmail.com?subject=Quote%20Request" class="btn-primary">Request a Quote</a>
+      <a href="mailto:navybrar34@gmail.com" class="btn-primary">Request a Quote</a>
       <a href="#services" class="btn-outline">Our Services</a>
     </div>
   </div>
@@ -1092,161 +1285,200 @@ footer {
 <!-- ── PROJECTS ── -->
 <section class="projects" id="projects">
   <div class="section-header">
-    <div class="section-eyebrow">Completed Work</div>
-    <div class="section-title">Our <span>Projects</span></div>
+    <div class="section-eyebrow">Our Work</div>
+    <div class="section-title">Featured <span>Projects</span></div>
   </div>
 
   <div class="projects-grid">
-
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 01</div>
-        <div class="project-name">Otokos Dealership</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">Bajrac</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
+    <div class="project-card" data-project="scotia">
+      <div class="project-thumb">
+        <img src="images/scotia-01.jpg" alt="Scotia Place Event Centre steel framing exterior">
+        <div class="project-thumb-count">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.6"/></svg>
+          1 Photo
+        </div>
+        <div class="project-overlay">
+          <div class="project-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6M20 20h-6v-6M4 20l6-6M20 4l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+            View Gallery
           </div>
         </div>
       </div>
+      <div class="project-info">
+        <div class="project-tag">Commercial · Calgary, AB</div>
+        <div class="project-title">Scotia Place Event Centre</div>
+        <div class="project-desc">Steel framing scope on Calgary's new downtown event centre — exterior wall assemblies and structural framing on a major commercial build.</div>
+      </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 02</div>
-        <div class="project-name">Lions Gate</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">PCL</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
+    <div class="project-card" data-project="acto">
+      <div class="project-thumb">
+        <img src="images/acto-01.jpg" alt="Acto Warehouse steel framing exterior">
+        <div class="project-thumb-count">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.6"/></svg>
+          3 Photos
+        </div>
+        <div class="project-overlay">
+          <div class="project-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6M20 20h-6v-6M4 20l6-6M20 4l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+            View Gallery
           </div>
         </div>
       </div>
+      <div class="project-info">
+        <div class="project-tag">Commercial · Warehouse</div>
+        <div class="project-title">Acto Warehouse</div>
+        <div class="project-desc">Exterior steel stud framing and insulation for a commercial warehouse build — rough openings, door framing, and wall assembly done to spec.</div>
+      </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 03</div>
-        <div class="project-name">Scotia Arena</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">CANA</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
+    <div class="project-card" data-project="stpaul">
+      <div class="project-thumb">
+        <img src="images/stpaul-04.jpg" alt="New St. Paul's Hospital construction exterior">
+        <div class="project-thumb-count">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.6"/></svg>
+          9 Photos
+        </div>
+        <div class="project-overlay">
+          <div class="project-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6M20 20h-6v-6M4 20l6-6M20 4l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+            View Gallery
           </div>
         </div>
       </div>
+      <div class="project-info">
+        <div class="project-tag">Institutional · Vancouver, BC</div>
+        <div class="project-title">New St. Paul's Hospital</div>
+        <div class="project-desc">Steel stud framing and T-bar ceiling grid on one of Western Canada's largest healthcare builds — precision layout across corridors, patient rooms, and mechanical rough-in.</div>
+      </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 04</div>
-        <div class="project-name">New Saint Hospital</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">PCL</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
+    <div class="project-card" data-project="liongate">
+      <div class="project-thumb">
+        <img src="images/liongate-04.jpg" alt="Lions Gate Hospital North Vancouver exterior">
+        <div class="project-thumb-count">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.6"/></svg>
+          4 Photos
+        </div>
+        <div class="project-overlay">
+          <div class="project-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6M20 20h-6v-6M4 20l6-6M20 4l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+            View Gallery
           </div>
         </div>
       </div>
+      <div class="project-info">
+        <div class="project-tag">Institutional · North Vancouver, BC</div>
+        <div class="project-title">Lions Gate Hospital</div>
+        <div class="project-desc">Structural steel connections, exterior wall assembly, and rooftop framing on the Lions Gate Hospital redevelopment.</div>
+      </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 05</div>
-        <div class="project-name">Calgary Hyundai</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">Bajrac</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
+    <div class="project-card" data-project="otokos">
+      <div class="project-thumb">
+        <img src="images/otokos-01.jpg" alt="Otokos Dealership steel framing ceiling grid">
+        <div class="project-thumb-count">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.6"/></svg>
+          2 Photos
+        </div>
+        <div class="project-overlay">
+          <div class="project-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6M20 20h-6v-6M4 20l6-6M20 4l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+            View Gallery
           </div>
         </div>
       </div>
+      <div class="project-info">
+        <div class="project-tag">Commercial · Dealership</div>
+        <div class="project-title">Otokos Dealership</div>
+        <div class="project-desc">Overhead steel framing and soffit layout for a commercial dealership build-out — clean grid work around mechanical and electrical rough-in.</div>
+      </div>
     </div>
 
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 06</div>
-        <div class="project-name">ATCO Warehouse</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">Ellisdon</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
+    <div class="project-card" data-project="hyundai">
+      <div class="project-thumb">
+        <img src="images/hyundai-02.jpg" alt="Calgary Hyundai steel framing X-bracing">
+        <div class="project-thumb-count">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="1" stroke="currentColor" stroke-width="1.6"/><circle cx="8.5" cy="10.5" r="1.5" fill="currentColor"/><path d="M3 16l5-5 4 4 3-3 6 6" stroke="currentColor" stroke-width="1.6"/></svg>
+          2 Photos
+        </div>
+        <div class="project-overlay">
+          <div class="project-view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 4h6v6M20 20h-6v-6M4 20l6-6M20 4l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"/></svg>
+            View Gallery
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="project-card">
-      <div class="project-tag">
-        <span class="project-tag-label">Job File</span>
-        <span class="project-tag-status">Complete</span>
-      </div>
-      <div class="project-body">
-        <div class="project-num">PROJECT 07</div>
-        <div class="project-name">Prince George Apartments</div>
-        <div class="project-divider"></div>
-        <div class="project-meta">
-          <div class="project-meta-block">
-            <span class="project-meta-label">General Contractor</span>
-            <span class="project-meta-value">—</span>
-          </div>
-          <div class="project-bolt">
-            <svg viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6V10C18 14 14 17.5 10 18C6 17.5 2 14 2 10V6L10 2Z" stroke="#e8b44a" stroke-width="1.4" fill="none"/></svg>
-          </div>
-        </div>
+      <div class="project-info">
+        <div class="project-tag">Commercial · Calgary, AB</div>
+        <div class="project-title">Calgary Hyundai</div>
+        <div class="project-desc">Steel stud framing and X-bracing plus drywall finishing on a dealership renovation — from rough framing to paint-ready walls.</div>
       </div>
     </div>
 
+    <div class="project-card no-photo">
+      <div class="project-thumb no-photo-thumb">
+        <div class="no-photo-badge">Photos Coming Soon</div>
+        <svg class="no-photo-icon" viewBox="0 0 48 48" fill="none">
+          <rect x="4" y="4" width="40" height="40" stroke="#3a6bc4" stroke-width="1.5"/>
+          <path d="M4 4L44 44M44 4L4 44" stroke="#3a6bc4" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="project-info">
+        <div class="project-tag">Multi-Family · Calgary, AB</div>
+        <div class="project-title">Shops &amp; Apartments</div>
+        <div class="project-desc">Steel framing and drywall on a mixed-use retail and residential build in Calgary.</div>
+      </div>
+    </div>
+
+    <div class="project-card no-photo">
+      <div class="project-thumb no-photo-thumb">
+        <div class="no-photo-badge">Photos Coming Soon</div>
+        <svg class="no-photo-icon" viewBox="0 0 48 48" fill="none">
+          <rect x="4" y="4" width="40" height="40" stroke="#3a6bc4" stroke-width="1.5"/>
+          <path d="M4 4L44 44M44 4L4 44" stroke="#3a6bc4" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="project-info">
+        <div class="project-tag">Multi-Family · Surrey, BC</div>
+        <div class="project-title">Shops &amp; Apartments</div>
+        <div class="project-desc">Steel framing and drywall on a mixed-use retail and residential build in Surrey.</div>
+      </div>
+    </div>
+
+    <div class="project-card no-photo">
+      <div class="project-thumb no-photo-thumb">
+        <div class="no-photo-badge">Photos Coming Soon</div>
+        <svg class="no-photo-icon" viewBox="0 0 48 48" fill="none">
+          <rect x="4" y="4" width="40" height="40" stroke="#3a6bc4" stroke-width="1.5"/>
+          <path d="M4 4L44 44M44 4L4 44" stroke="#3a6bc4" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="project-info">
+        <div class="project-tag">Multi-Family · Prince George, BC</div>
+        <div class="project-title">Shops &amp; Apartments</div>
+        <div class="project-desc">Steel framing and drywall on a mixed-use retail and residential build in Prince George.</div>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- ── PROJECT LIGHTBOX ── -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <div class="lightbox-stage">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close gallery">✕</button>
+      <button class="lightbox-arrow prev" id="lightboxPrev" aria-label="Previous photo">‹</button>
+      <img class="lightbox-img" id="lightboxImg" src="" alt="">
+      <button class="lightbox-arrow next" id="lightboxNext" aria-label="Next photo">›</button>
+    </div>
+    <div class="lightbox-meta">
+      <div class="lightbox-title" id="lightboxTitle">Scotia Place Event Centre</div>
+      <div class="lightbox-counter" id="lightboxCounter">1 / 4</div>
+    </div>
+    <div class="lightbox-thumbs" id="lightboxThumbs"></div>
+  </div>
+</div>
 
 <!-- ── WHY US ── -->
 <section class="why" id="why">
@@ -1351,16 +1583,58 @@ footer {
   </div>
 </section>
 
+<!-- ── REVIEWS ── -->
+<section class="reviews" id="reviews">
+  <div class="section-header">
+    <div class="section-eyebrow">What GCs Say</div>
+    <div class="section-title">Client <span>Reviews</span></div>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">Navy and his team read the drawings right the first time and show up when they say they will. Their punctuality, quality, and the amount of work they get done on schedule made them an easy crew to trust on our job.</div>
+      <div class="review-author">Rick Johnston</div>
+      <div class="review-role">General Contractor</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">Working with Navy and his team was a fantastic experience. They are highly professional, remarkably hard-working, and an absolute pleasure to collaborate with. Thank you all so much for the incredible work!</div>
+      <div class="review-author">Steve Brazil</div>
+      <div class="review-role">General Contractor</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">It was an absolute pleasure collaborating with Navy and his team. What truly sets them apart is their exceptional communication and deep understanding of project requirements. They listened carefully to our needs, made us feel welcome, and were consistently present and engaged during every meeting. Their dedication to punctuality was outstanding, delivering the entire project exactly on time.</div>
+      <div class="review-author">Fred</div>
+      <div class="review-role">General Contractor</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">We've had Navy's crew on a couple of our multi-family sites now for steel framing and drywall, and they've been one of the more reliable subs we work with. They coordinate well with our site super, keep the units moving through on schedule, and their finishing is clean enough that our QC walks go a lot faster. Would bring them back on future phases without hesitation.</div>
+      <div class="review-author">Feruzi</div>
+      <div class="review-role">Project Manager · Westurban</div>
+    </div>
+  </div>
+</section>
+
 <!-- ── CTA ── -->
 <section class="cta-section" id="contact">
   <div class="cta-inner">
     <div class="section-eyebrow" style="justify-content:center;margin-bottom:16px;">Ready to Work Together</div>
     <div class="cta-title">Let's Build<br><span>Something Solid</span></div>
     <p class="cta-sub">Send us your drawings or give us a call. We quote fast, start fast, and finish right.</p>
-    <a href="tel:7749184034" class="btn-primary">Call Nav Directly</a>
+    <a href="tel:7789084034" class="btn-primary">Call Nav Directly</a>
 
     <div class="contact-grid">
-      <a href="tel:7749184034" class="contact-item">
+      <a href="tel:7789084034" class="contact-item">
         <div class="contact-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
             <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.18 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14z" stroke="#3a6bc4" stroke-width="1.5" stroke-linecap="square"/>
@@ -1368,7 +1642,7 @@ footer {
         </div>
         <div>
           <span class="contact-label">Phone</span>
-          <span class="contact-value">774-918-4034</span>
+          <span class="contact-value">778-908-4034</span>
         </div>
       </a>
 
@@ -1425,6 +1699,136 @@ footer {
   </div>
   <div class="footer-copy">© 2025 Navy Interior Systems. All rights reserved.</div>
 </footer>
+
+<script>
+(function () {
+  var projects = {
+    scotia: {
+      title: 'Scotia Place Event Centre',
+      images: [
+        'images/scotia-01.jpg'
+      ]
+    },
+    acto: {
+      title: 'Acto Warehouse',
+      images: [
+        'images/acto-01.jpg',
+        'images/acto-02.jpg',
+        'images/acto-03.jpg'
+      ]
+    },
+    stpaul: {
+      title: "New St. Paul's Hospital",
+      images: [
+        'images/stpaul-01.jpg',
+        'images/stpaul-02.jpg',
+        'images/stpaul-03.jpg',
+        'images/stpaul-04.jpg',
+        'images/stpaul-05.jpg',
+        'images/stpaul-06.jpg',
+        'images/stpaul-07.jpg',
+        'images/stpaul-08.jpg',
+        'images/stpaul-09.jpg'
+      ]
+    },
+    liongate: {
+      title: 'Lions Gate Hospital',
+      images: [
+        'images/liongate-01.jpg',
+        'images/liongate-02.jpg',
+        'images/liongate-03.jpg',
+        'images/liongate-04.jpg'
+      ]
+    },
+    otokos: {
+      title: 'Otokos Dealership',
+      images: [
+        'images/otokos-01.jpg',
+        'images/otokos-02.jpg'
+      ]
+    },
+    hyundai: {
+      title: 'Calgary Hyundai',
+      images: [
+        'images/hyundai-01.jpg',
+        'images/hyundai-02.jpg'
+      ]
+    }
+  };
+
+  var lightbox = document.getElementById('lightbox');
+  var lightboxImg = document.getElementById('lightboxImg');
+  var lightboxTitle = document.getElementById('lightboxTitle');
+  var lightboxCounter = document.getElementById('lightboxCounter');
+  var lightboxThumbs = document.getElementById('lightboxThumbs');
+  var closeBtn = document.getElementById('lightboxClose');
+  var prevBtn = document.getElementById('lightboxPrev');
+  var nextBtn = document.getElementById('lightboxNext');
+
+  var currentProject = null;
+  var currentIndex = 0;
+
+  function renderThumbs() {
+    lightboxThumbs.innerHTML = '';
+    currentProject.images.forEach(function (src, i) {
+      var t = document.createElement('img');
+      t.src = src;
+      t.alt = currentProject.title + ' photo ' + (i + 1);
+      if (i === currentIndex) t.classList.add('active');
+      t.addEventListener('click', function () { showImage(i); });
+      lightboxThumbs.appendChild(t);
+    });
+  }
+
+  function showImage(index) {
+    var imgs = currentProject.images;
+    currentIndex = (index + imgs.length) % imgs.length;
+    lightboxImg.src = imgs[currentIndex];
+    lightboxImg.alt = currentProject.title + ' photo ' + (currentIndex + 1);
+    lightboxCounter.textContent = (currentIndex + 1) + ' / ' + imgs.length;
+    renderThumbs();
+  }
+
+  function openProject(key) {
+    currentProject = projects[key];
+    if (!currentProject) return;
+    lightboxTitle.textContent = currentProject.title;
+    var single = currentProject.images.length <= 1;
+    prevBtn.style.display = single ? 'none' : 'flex';
+    nextBtn.style.display = single ? 'none' : 'flex';
+    lightboxThumbs.style.display = single ? 'none' : 'flex';
+    showImage(0);
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.project-card[data-project]').forEach(function (card) {
+    card.addEventListener('click', function () {
+      openProject(card.getAttribute('data-project'));
+    });
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+  prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
+  nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+    if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+  });
+})();
+</script>
 
 </body>
 </html>
